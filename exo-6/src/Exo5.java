@@ -90,7 +90,12 @@ public class Exo5 {
 
                     //Si la ville de depart est la premiere ville on initialise la plus petite distance à la distance suivante
                     if(i==0){
-                        leastDistance = card[i][1];
+                        if(contains(p,2) == true){
+                            leastDistance = card[i][2];
+                        }
+                        else{
+                            leastDistance = card[i][1];
+                        }
                     }
                   
                     for(int j = 0; j<card.length; j++){
@@ -127,43 +132,74 @@ public class Exo5 {
     */
     public static void salesmanRoute(int n, int[][] card, int villeDepart){
 
-        System.out.println("Valeur de n  : "+n);
+ 
         //On initialise le tableau des villes déja parcourues
         int alreadyTraveled[] = new int[n];
         int nextTown;
-        //alreadyTraveled[0] = villeDepart;
         int i =0;
         int distance = 0;
         int villeDepartInial = villeDepart;
 
         //On boucle sur l'ensemble des villes, pour pouvoir les parcourir toutes
         while(i<n){
-            System.out.println("Ville de depart aactuel : "+villeDepart);
             nextTown = plusCourt(card,villeDepart,alreadyTraveled);
-            System.out.println("La prochaine ville est : "+nextTown);
+           
             //On ajoute cette ville aux villes deja traversees
-            alreadyTraveled[i] = villeDepart;
-            System.out.println("Ville deja parcourue : "+alreadyTraveled[i]);
-            //On calcule la distance parcourue entre les deux villes
-            distance = distance + card[villeDepart-1][nextTown-1];
-            System.out.println("distance : "+distance);
+            if(contains(alreadyTraveled,villeDepart) == false){
+                alreadyTraveled[i] = villeDepart;
+            }
+          
+            if(villeDepart == 0 || nextTown == 0){
+                break;
+            }
+           
+           
             //la nouvelle ville de depart devient la ville actuelle ou on se trouve
             villeDepart = nextTown;
             
             i++;
         }
-        distance += villeDepartInial;
+        
+
+        for(i=0;i<n;i++){
+            if(alreadyTraveled[i] == 0){
+               for(int j=0; j<alreadyTraveled.length;j++){
+                   if(contains(alreadyTraveled,j+1) == false){
+                        alreadyTraveled[i] = j+1;
+                   }
+               }
+            }
+            else{
+                if(contains(alreadyTraveled,(i+1)) == false){
+                    alreadyTraveled[alreadyTraveled.length-1] = (i+1); 
+                }
+            }
+        }
 
         System.out.println("/*------------- Le parcours du voyageur est le suivant : -----------------*/ ");
 
+        for(i=0;i<alreadyTraveled.length;i++){
+            System.out.println("Ville parcourue : "+alreadyTraveled[i]);
+        }
+
         for(i = 0; i< alreadyTraveled.length; i++){
+
+            if(i!=alreadyTraveled.length-1){
+                distance += card[alreadyTraveled[i]-1][alreadyTraveled[i+1]-1];
+                
+            }
+            
             System.out.print(alreadyTraveled[i]);
 
             if( i != alreadyTraveled.length-1){
                 System.out.print("--->");
             }
         }
-        System.out.println("\nLa distance parcourue est : "+distance+"\n");
+        System.out.print("--->"+villeDepartInial);
+        
+        distance += card[alreadyTraveled[alreadyTraveled.length-1]-1][villeDepartInial-1];
+        
+        System.out.println("\nLa distance parcourue est : "+distance+" km\n");
 
     }
 }

@@ -22,7 +22,8 @@ public class Exo4 {
     }
     public void Empile(int element){
       if (PilePleine())
-         System.out.println("La pile est pleine! impossible d'empiler");
+      
+         System.out.println("\nLa pile est pleine! impossible d'empiler\n");
       else{
             tableau[sommet] = element;
             sommet++;
@@ -31,6 +32,12 @@ public class Exo4 {
     public int Depile(){
           sommet--; 
           return tableau[sommet];
+    }
+    public void Affichepile(){
+      System.out.println("\n");
+      for (int i=0; i<sommet; i++)
+        System.out.print(tableau[i]+"  ");
+      System.out.println("\n");
     }
      
     
